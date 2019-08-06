@@ -1,12 +1,12 @@
 package glartpxy
 
 import (
-	"errors"
 	// "testing"
 	"io"
 	"os"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -57,13 +57,14 @@ func (c GitlabArtifactAPIStub) GetSucceededJobs(project string) ([]gitlab.Job, e
 	return c.stubJobResponse, nil
 }
 
-func (c GitlabArtifactAPIStub) DownloadArtifact(project string, ref string, job string) (io.Reader, error) {
-	if project == "some-team%2fsome-project" && ref == "master" && job == "job1" {
-		f, err := os.Open(c.stubArtifact)
-		if err != nil {
-			return nil, err
-		}
-		return f, nil
+func (c GitlabArtifactAPIStub) DownloadArtifact(artifact ArtifactIdentifier) (io.Reader, error) {
+	expected := ArtifactIdentifier{"some-team%2fsome-project", "master", "job1"}
+	if artifact != expected {
+		return nil, errors.New("Unexpected arguments")
 	}
-	return nil, errors.New("Unexpected arguments")
+	f, err := os.Open(c.stubArtifact)
+	if err != nil {
+		return nil, err
+	}
+	return f, nil
 }

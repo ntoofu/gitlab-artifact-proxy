@@ -32,9 +32,9 @@ func TestOpen(t *testing.T) {
 	}
 	defer expected.Close()
 
-	gl := GitlabArtifactAPIStub{}
+	gl := createGitlabArtifactAPIStub()
 	artifact := ArtifactIdentifier{"some-team%2fsome-project", "master", "job1"}
-	cache := NewArtifactCache(time.Second*5, &gl, artifact)
+	cache := NewArtifactCache(time.Second*5, gl, artifact)
 	c, err := cache.Open()
 	if err != nil {
 		t.Fatal(err)
@@ -51,9 +51,9 @@ func TestOpen(t *testing.T) {
 }
 
 func TestCacheTTL(t *testing.T) {
-	gl := GitlabArtifactAPIStub{}
+	gl := createGitlabArtifactAPIStub()
 	artifact := ArtifactIdentifier{"some-team%2fsome-project", "master", "job1"}
-	cache := NewArtifactCache(time.Second*5, &gl, artifact)
+	cache := NewArtifactCache(time.Second*5, gl, artifact)
 	c1, err := cache.Open()
 	if err != nil {
 		t.Fatal(err)
@@ -108,9 +108,9 @@ func TestCacheTTL(t *testing.T) {
 }
 
 func TestUpdateCheck(t *testing.T) {
-	gl := GitlabArtifactAPIStub{}
+	gl := createGitlabArtifactAPIStub()
 	artifact := ArtifactIdentifier{"some-team%2fsome-project", "master", "job1"}
-	cache := NewArtifactCache(time.Second*1, &gl, artifact)
+	cache := NewArtifactCache(time.Second*5, gl, artifact)
 	c1, err := cache.Open()
 	if err != nil {
 		t.Fatal(err)
