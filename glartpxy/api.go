@@ -7,7 +7,7 @@ import (
 
 type GitlabArtifactAPI interface {
 	GetSucceededJobs(project string) ([]gitlab.Job, error)
-	DownloadArtifact(project string, ref string, job string) (io.Reader, error)
+	DownloadArtifact(artifact ArtifactIdentifier) (io.Reader, error)
 }
 
 type GitlabArtifactAPIClient struct {
@@ -20,7 +20,7 @@ func (c GitlabArtifactAPIClient) GetSucceededJobs(project string) ([]gitlab.Job,
 	return nil, nil
 }
 
-func (c GitlabArtifactAPIClient) DownloadArtifact(project string, ref string, job string) (io.Reader, error) {
+func (c GitlabArtifactAPIClient) DownloadArtifact(artifact ArtifactIdentifier) (io.Reader, error) {
 	// TODO: impliment
 	return nil, nil
 }
